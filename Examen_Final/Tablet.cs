@@ -9,7 +9,6 @@
         {
             Tamano = 0;
             Soporte = string.Empty;
-
         }
     }
 }
