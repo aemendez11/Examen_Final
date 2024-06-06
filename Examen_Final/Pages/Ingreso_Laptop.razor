@@ -78,17 +78,18 @@
         </tbody>
     </table>
 }
-
+<p role="status">Productos Ingresados: @currentCount</p>
 
 @code {
     private Laptop laptop= new Laptop();
     List<Laptop> laptops = new List<Laptop>();
-
+    private int currentCount = 0;
     protected async Task Guardar()
     {
         laptops.Add(laptop);
         laptop = new Laptop();
         await localStorage.SetItemAsync("laptops", laptops);
+        currentCount++;
     }
 
     protected override async Task OnInitializedAsync()
@@ -100,7 +101,7 @@
     {
         laptops.Remove(laptops.First(c => c.Capacidad == Capacidad));
         await localStorage.SetItemAsync("laptops", laptops);
-
     }
-   
+    
+    
 }
