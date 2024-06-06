@@ -1,0 +1,55 @@
+﻿@page "/laptop-editar/{capacidad}"
+@inject HttpClient http
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+<h3>Editar Laptop</h3>
+<EditForm Model="@laptop" OnValidSubmit="@Guardar">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="Serie_Num">Serie de la Laptop</label>
+        <InputText id="Serie_Num" @bind-Value="laptop.Serie_Num" class="form-control" />
+        <ValidationMessage For="() => laptop.Serie_Num" />
+    </div>
+    <div class="form-group">
+        <label for="Marca">Marca de la Laptop</label>
+        <InputText id="Marca" @bind-Value="laptop.Marca" class="form-control" />
+        <ValidationMessage For="() => laptop.Marca" />
+    </div>
+    <div class="form-group">
+        <label for="Modelo">Modelo de la Laptop</label>
+        <InputText id="Modelo" @bind-Value="laptop.Modelo" class="form-control" />
+        <ValidationMessage For="() => laptop.Modelo" />
+    </div>
+    <div class="form-group">
+        <label for=" Memoria_ram">Memoria Ram de la Laptop</label>
+        <InputNumber id=" Memoria_ram" @bind-Value="laptop. Memoria_ram" class="form-control" />
+        <ValidationMessage For="() => laptop. Memoria_ram" />
+    </div>
+    <div class="form-group">
+        <label for=" Capacidad">Capacidad de Almacenamiento de la Laptop</label>
+        <InputText id="Capacidad" @bind-Value="laptop.Capacidad" class="form-control" />
+        <ValidationMessage For="() => laptop.Capacidad" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public string capacidad { get; set; }
+
+    private Laptop laptop = new Laptop();
+    List<Laptop> laptops = new List<Laptop>();
+
+    protected async Task Guardar()
+    {
+        await localStorage.SetItemAsync("laptops", laptops);
+        NavigationManager.NavigateTo("/laptop-crear");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        laptops = await localStorage.GetItemAsync<List<Laptop>>("laptops");
+        laptop = laptops.Find(c => c.Capacidad == capacidad);
+    }
+}
